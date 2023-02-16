@@ -1,0 +1,7 @@
+export * as AuthController from './AuthController.js'
+export * as AllController from './AllController.js'
+export * as StudentController from './StudentController.js'
+export * as TeacherController from './TeacherController.js'
+export * as LessonsController from './LessonsController.js'
+export * as RemidersController from './RemidersController.js'
+export * as ReportController from './ReportController.js'
