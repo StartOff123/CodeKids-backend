@@ -4,8 +4,7 @@ import multer from "multer"
 import cors from "cors"
 
 import { AuthController, AllController, StudentController, TeacherController, LessonsController, RemidersController, ReportController } from './controllers/index.js'
-import { lessonValidation, loginValidation, passwordValidation, registerValidation, remiderValidation, studentValidation, teacherValidation, updateTeacherValidation } from "./validations/validations.js"
-import ReportModel from './models/Report.js'
+import { lessonValidation, registerValidation, remiderValidation, studentValidation, teacherValidation, updateTeacherValidation } from "./validations/validations.js"
 import validationErrors from "./utils/validationErrors.js"
 import checkAuth from "./utils/checkAuth.js"
 
@@ -41,7 +40,7 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
 
 //Регистрация и авторизация
 app.post('/auth/registered', registerValidation, validationErrors, AuthController.register)
-app.post('/auth/login', loginValidation, validationErrors, AuthController.login)
+app.post('/auth/login', AuthController.login)
 app.get('/auth/me', checkAuth, AuthController.getMe)
 
 //Получение полных таблиц учителей и учеников

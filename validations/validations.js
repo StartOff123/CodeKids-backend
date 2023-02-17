@@ -7,11 +7,6 @@ export const registerValidation = [
     body('password', 'Длинна пароля должна быть не меньше 8 символов').isLength({ min: 8 }),
 ]
 
-export const loginValidation = [
-    body('login', 'Укажите логин').isLength({ min: 4 }),
-    body('password', 'Длинна пароля должна быть не меньше 8 символов').isLength({ min: 8 }),
-]
-
 export const studentValidation = [
     body('name', 'Укажите имя').isLength({ min: 2 }),
     body('surname', 'Укажите фаимилию').isLength({ min: 2 }),
