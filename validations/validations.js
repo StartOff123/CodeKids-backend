@@ -10,7 +10,7 @@ export const registerValidation = [
 export const studentValidation = [
     body('name', 'Укажите имя').isLength({ min: 2 }),
     body('surname', 'Укажите фаимилию').isLength({ min: 2 }),
-    body('phone', 'Неверный формат телефона').isLength({ max: 11, min: 11 })
+    body('phone', 'Неверный формат телефона').isLength({ max: 12, min: 11 })
 ]
 
 export const teacherValidation = [

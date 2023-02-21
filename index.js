@@ -51,6 +51,7 @@ app.get('/auth/me', checkAuth, AuthController.getMe)
 app.get('/teachers', AllController.getAllTeachers)
 app.get('/students', AllController.getAllStudents)
 
+//Обноваление пароля
 app.patch('/password/:id', checkAuth,  TeacherController.updatePassword )
 
 //Добавление и удаление учеников

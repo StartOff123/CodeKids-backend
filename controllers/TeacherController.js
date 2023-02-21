@@ -1,5 +1,7 @@
-import TeacherModel from "../models/Teacher.js"
 import bcrypt from 'bcrypt'
+import chalk from 'chalk'
+
+import TeacherModel from "../models/Teacher.js"
 
 export const removeTeacher = (req, res) => {
     try {
@@ -23,10 +25,12 @@ export const removeTeacher = (req, res) => {
                 success: true
             })
         })
+        console.log(`${chalk.red('DELETE')} ${chalk.underline.italic.gray('/teacher/remove/' + teacherId)} success: ${chalk.green('true')}`)
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             message: 'Не удалось удалить учителя'
         })
+        console.log(`${chalk.red('DELETE')} ${chalk.underline.italic.gray('/teacher/remove/' + req.params.id)} success: ${chalk.red('false')}`)
     }
 }
 
@@ -45,10 +49,12 @@ export const updateTeacher = async (req, res) => {
         res.json({
             success: true
         })
+        console.log(`${chalk.yellow('PATCH')} ${chalk.underline.italic.gray('/teacher/update/' + teacherId)} success: ${chalk.green('true')}`)
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             message: 'Не удалось внести изменения'
         })
+        console.log(`${chalk.yellow('PATCH')} ${chalk.underline.italic.gray('/teacher/update/' + req.params.id)} success: ${chalk.red('false')}`)
     }
 }
 
@@ -61,8 +67,9 @@ export const updatePassword = async (req, res) => {
         const isValidPassword = await bcrypt.compare(req.body.oldPassword, teacher._doc.passwordHash)
         
         if (!isValidPassword) {
+            console.log(`${chalk.yellow('PATCH')} ${chalk.underline.italic.gray('/password/' + teacherId)} success: ${chalk.red('false')}`)
             return res.status(500).json({
-                "message": "Старый пароль введен не верно"
+                message: 'Старый пароль введен не верно'
             })
         }
         
@@ -78,9 +85,11 @@ export const updatePassword = async (req, res) => {
         res.json({
             success: true
         })
+        console.log(`${chalk.yellow('PATCH')} ${chalk.underline.italic.gray('/password/' + teacherId)} success: ${chalk.green('true')}`)
     } catch (error) {
-        return res.status(500).json({
+        res.status(500).json({
             message: 'Не удалось изменить пароль'
         })
+        console.log(`${chalk.yellow('PATCH')} ${chalk.underline.italic.gray('/password/' + req.params.id)} success: ${chalk.red('false')}`)
     }
 }
