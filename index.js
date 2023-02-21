@@ -2,8 +2,9 @@ import express from "express"
 import mongoose from "mongoose"
 import multer from "multer"
 import cors from "cors"
+import chalk from "chalk"
 
-import { AuthController, AllController, StudentController, TeacherController, LessonsController, RemidersController, ReportController } from './controllers/index.js'
+import { AuthController, AllController, StudentController, TeacherController, LessonsController, RemidersController, ReportController, RootController } from './controllers/index.js'
 import { lessonValidation, registerValidation, remiderValidation, studentValidation, teacherValidation, updateTeacherValidation } from "./validations/validations.js"
 import validationErrors from "./utils/validationErrors.js"
 import checkAuth from "./utils/checkAuth.js"
@@ -11,8 +12,8 @@ import checkAuth from "./utils/checkAuth.js"
 //Подключение к БД
 mongoose
     .connect('mongodb+srv://admin:StartOff0492@cluster0.y1zox4x.mongodb.net/CodeKits?retryWrites=true&w=majority')
-    .then(() => console.log('Успешное подключение к БД.'))
-    .catch(error => console.log('Ошибка подключения к БД: ', error))
+    .then(() => console.log('Подключение к БД:', chalk.green('ОК')))
+    .catch(error => console.log('Подключения к БД:', chalk.red('ERR::'), error))
 
 //Создание сервера и его состовляющих
 const app = express()
@@ -30,6 +31,9 @@ const upload = multer({ storage })
 app.use(express.json())
 app.use(cors())
 app.use('/uploads', express.static('uploads'))
+
+//Порт сервера
+const PORT = process.env.PORT || 5555
 
 //Закрузка аватарки
 app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
@@ -71,11 +75,15 @@ app.post('/remiders/add', checkAuth, remiderValidation, validationErrors, Remide
 app.delete('/remiders/remove/:id', checkAuth, RemidersController.removeRemider)
 
 //Отчет 
-app.get('/report', ReportController.add)
+app.get('/report', ReportController.all)
 app.delete('/report/remove', checkAuth, ReportController.removeAll)
 
+//Права администратора
+app.patch('/root', checkAuth, RootController.root)
+app.patch('/noroot', checkAuth, RootController.noRoot)
+
 //Запуск сервера
-app.listen(5555, error => {
+app.listen(PORT, error => {
     if (error) throw console.log('Ошибка при запуске сервера: ', error)
-    console.log('Сервер успешно запущен.')
+    console.log('Сервер запущен на проту:', chalk.green(PORT))
 })
