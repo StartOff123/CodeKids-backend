@@ -4,6 +4,7 @@ import TeacherModel from "../models/Teacher.js"
 import StudenModel from "../models/Student.js"
 
 export const getAllTeachers = async (req ,res) => {
+    console.log(req.teacherId)
     try {
         const teacher = await TeacherModel.find()
 

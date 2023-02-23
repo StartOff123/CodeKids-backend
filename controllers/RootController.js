@@ -5,7 +5,7 @@ import TeacherModel from "../models/Teacher.js"
 export const root = async (req, res) => {
     try {
         await TeacherModel.updateOne({
-            _id: req.body.id
+            _id: req.params.id
         }, {
             status: 'admin'
         })
@@ -25,7 +25,7 @@ export const root = async (req, res) => {
 export const noRoot = async (req, res) => {
     try {
         await TeacherModel.updateOne({
-            _id: req.body.id
+            _id: req.params.id
         }, {
             status: 'defaultTeacher'
         })

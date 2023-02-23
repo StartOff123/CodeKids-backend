@@ -48,8 +48,8 @@ app.post('/auth/login', AuthController.login)
 app.get('/auth/me', checkAuth, AuthController.getMe)
 
 //Получение полных таблиц учителей и учеников
-app.get('/teachers', AllController.getAllTeachers)
-app.get('/students', AllController.getAllStudents)
+app.get('/teachers', checkAuth, AllController.getAllTeachers)
+app.get('/students', checkAuth, AllController.getAllStudents)
 
 //Обноваление пароля
 app.patch('/password/:id', checkAuth,  TeacherController.updatePassword )
@@ -80,8 +80,8 @@ app.get('/report', ReportController.all)
 app.delete('/report/remove', checkAuth, ReportController.removeAll)
 
 //Права администратора
-app.patch('/root', checkAuth, RootController.root)
-app.patch('/noroot', checkAuth, RootController.noRoot)
+app.patch('/root/:id', checkAuth, RootController.root)
+app.patch('/noroot/:id', checkAuth, RootController.noRoot)
 
 //Запуск сервера
 app.listen(PORT, error => {
