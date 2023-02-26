@@ -47,9 +47,10 @@ app.post('/auth/registered', registerValidation, validationErrors, AuthControlle
 app.post('/auth/login', AuthController.login)
 app.get('/auth/me', checkAuth, AuthController.getMe)
 
-//Получение полных таблиц учителей и учеников
+//Получение полных таблиц учителей, учеников и уроков
 app.get('/teachers', checkAuth, AllController.getAllTeachers)
 app.get('/students', checkAuth, AllController.getAllStudents)
+app.get('/lessons', checkAuth, AllController.getAllLessons)
 
 //Обноваление пароля
 app.patch('/password/:id', checkAuth,  TeacherController.updatePassword )

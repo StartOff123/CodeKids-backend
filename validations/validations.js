@@ -34,6 +34,6 @@ export const lessonValidation = [
 ]
 
 export const remiderValidation = [
-    body('title', 'Укажите название заметки').isLength({ min: 2 }),
-    body('content', 'Укажите содержимое замтеки').isLength({ min: 6 }),
+    body('title', 'Укажите название заметки').isLength({ min: 1 }),
+    body('content', 'Укажите содержимое замтеки').isLength({ min: 1 }),
 ]

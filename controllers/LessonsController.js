@@ -2,17 +2,15 @@ import chalk from "chalk"
 
 import LessonModel from "../models/Lesson.js"
 import ReportModel from "../models/Report.js"
-import StudentModel from '../models/Student.js'
 import TeacherModel from '../models/Teacher.js'
 
 export const addLesson = async (req, res) => {
     try {
-        const student = await StudentModel.findById(req.body.studentId).exec()
         const doc = new LessonModel({
             title: req.body.title,
             theme: req.body.theme,
             date: req.body.date,
-            student: student.name + ' ' + student.surname,
+            student: req.body.studentId,
             teacher: req.teacherId,
         })
         const lesson = await doc.save()

@@ -2,10 +2,13 @@ import bcrypt from 'bcrypt'
 import chalk from 'chalk'
 
 import TeacherModel from "../models/Teacher.js"
+import RemideModel from "../models/Remider.js"
+import LessonModel from "../models/Lesson.js"
 
-export const removeTeacher = (req, res) => {
+export const removeTeacher = async (req, res) => {
     try {
         const teacherId = req.params.id
+
         TeacherModel.findByIdAndRemove({
             _id: teacherId
         }, (error, doc) => {
@@ -14,17 +17,21 @@ export const removeTeacher = (req, res) => {
                     message: 'Не удалось удалить учителя'
                 })
             }
-
+            
             if (!doc) {
                 return res.status(404).json({
                     message: 'Учитель не найден'
                 })
             }
-
+            
             res.json({
                 success: true
             })
         })
+
+        await RemideModel.deleteMany({ teacher: teacherId })
+        await LessonModel.deleteMany({ teacher: teacherId })
+
         console.log(`${chalk.red('DELETE')} ${chalk.underline.italic.gray('/teacher/remove/' + teacherId)} success: ${chalk.green('true')}`)
     } catch (error) {
         res.status(500).json({
@@ -44,7 +51,7 @@ export const updateTeacher = async (req, res) => {
             name: req.body.name,
             surname: req.body.surname,
             avatarUrl: req.body.avatarUrl,
-        }) 
+        })
 
         res.json({
             success: true
@@ -65,14 +72,14 @@ export const updatePassword = async (req, res) => {
 
         const teacher = await TeacherModel.findById(teacherId)
         const isValidPassword = await bcrypt.compare(req.body.oldPassword, teacher._doc.passwordHash)
-        
+
         if (!isValidPassword) {
             console.log(`${chalk.yellow('PATCH')} ${chalk.underline.italic.gray('/password/' + teacherId)} success: ${chalk.red('false')}`)
             return res.status(500).json({
                 message: 'Старый пароль введен не верно'
             })
         }
-        
+
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(newPassword, salt)
 

@@ -7,7 +7,7 @@ const TeacherSchema = new mongoose.Schema({
     login: { type: String, require: true, unique: true },
     status: { type: String, require: true, default: 'defaultTeacher' },
     passwordHash: { type: String, require: true },
-    avatarUrl: String
+    avatarUrl: { type: String, default: '' }
 }, {
     timestamps: true
 })
