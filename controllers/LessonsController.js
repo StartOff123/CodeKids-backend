@@ -3,6 +3,7 @@ import chalk from "chalk"
 import LessonModel from "../models/Lesson.js"
 import ReportModel from "../models/Report.js"
 import TeacherModel from '../models/Teacher.js'
+import StudentModel from '../models/Student.js'
 
 export const addLesson = async (req, res) => {
     try {
@@ -95,17 +96,20 @@ export const updateLesson = async (req, res) => {
 export const heldLesson = async (req, res) => {
     try {
         const lessonId = req.params.id
+        const lesson = await LessonModel.findById({ _id: lessonId })
+        const teacher = await TeacherModel.findById(lesson.teacher).exec()
+        const student = await StudentModel.findById(lesson.student).exec()
+
         await LessonModel.updateOne({
             _id: lessonId
         }, {
+            student: student.name + ' ' + student.surname,
             status: 'held'
         })
         
-        const lesson = await LessonModel.findById({ _id: lessonId })
-        const teacher = await TeacherModel.findById(lesson.teacher).exec()
         const doc = new ReportModel({
             teacher: teacher.name + ' ' + teacher.surname,
-            student: lesson.student,
+            student: student.name + ' ' + student.surname,
             title: lesson.title,
             theme: lesson.theme,
         })

@@ -1,6 +1,7 @@
 import chalk from "chalk"
 
 import StudentModel from "../models/Student.js"
+import LessonModel from "../models/Lesson.js"
 
 export const addStudent = async (req, res) => {
     try {
@@ -21,7 +22,7 @@ export const addStudent = async (req, res) => {
     }
 }
 
-export const removeStudent = (req, res) => {
+export const removeStudent = async (req, res) => {
     try {
         const studentId = req.params.id
         StudentModel.findByIdAndRemove({
@@ -39,10 +40,13 @@ export const removeStudent = (req, res) => {
                 })
             }
 
+            
             res.json({
                 success: true
             })
         })
+        
+        await LessonModel.deleteMany({ student: studentId })
         console.log(`${chalk.red('DELETE')} ${chalk.underline.italic.gray('/student/remove/' + studentId)} success: ${chalk.green('true')}`)
     } catch (error) {
         res.status(500).json({
