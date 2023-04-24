@@ -76,9 +76,8 @@ app.get('/remiders/all', checkAuth, RemidersController.allRemiders)
 app.post('/remiders/add', checkAuth, remiderValidation, validationErrors, RemidersController.addRemider)
 app.delete('/remiders/remove/:id', checkAuth, RemidersController.removeRemider)
 
-//Отчет 
-app.get('/report', ReportController.all)
-app.delete('/report/remove', checkAuth, ReportController.removeAll)
+//Отчет
+app.post('/report/monthly_report', checkAuth, ReportController.monthlyReport)
 
 //Права администратора
 app.patch('/root/:id', checkAuth, RootController.root)

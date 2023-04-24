@@ -1,7 +1,6 @@
 import chalk from "chalk"
 
 import LessonModel from "../models/Lesson.js"
-import ReportModel from "../models/Report.js"
 import TeacherModel from '../models/Teacher.js'
 import StudentModel from '../models/Student.js'
 
@@ -96,26 +95,14 @@ export const updateLesson = async (req, res) => {
 export const heldLesson = async (req, res) => {
     try {
         const lessonId = req.params.id
-        const lesson = await LessonModel.findById({ _id: lessonId })
-        const teacher = await TeacherModel.findById(lesson.teacher).exec()
-        const student = await StudentModel.findById(lesson.student).exec()
 
         await LessonModel.updateOne({
             _id: lessonId
         }, {
-            student: student.name + ' ' + student.surname,
             status: 'held'
         })
-        
-        const doc = new ReportModel({
-            teacher: teacher.name + ' ' + teacher.surname,
-            student: student.name + ' ' + student.surname,
-            title: lesson.title,
-            theme: lesson.theme,
-        })
-        const report = await doc.save()
- 
-        res.json(report)
+
+        res.json({ success: true })
         console.log(`${chalk.yellow('PATCH')} ${chalk.underline.italic.gray('/lessons/held/' + lessonId)} success: ${chalk.green('true')}`)
     } catch (error) {
         console.log(error)

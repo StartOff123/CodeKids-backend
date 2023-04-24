@@ -1,33 +1,18 @@
 import chalk from 'chalk'
 
-import ReportModel from '../models/Report.js'
+import LessonModel from '../models/Lesson.js'
 
-export const all = async (req ,res) => {
+export const monthlyReport = async (req, res) => {
+    console.log(1)
     try {
-        const report = await ReportModel.find()
+        await LessonModel.find({ status: 'held', date: {$gt: req.body.gt, $lt: req.body.lt} }).exec((err, docs) => {
+            if (err) {
+                return res.status(403).json({ success: false })
+            }
 
-        res.json(report)
-        console.log(`${chalk.magenta('GET')} ${chalk.underline.italic.gray('/report')} success: ${chalk.green('true')}`)
+            res.json(docs)
+        })
     } catch (error) {
-        res.status(500).json({
-            message: 'Не удалось вернуть отчет'
-        })
-        console.log(`${chalk.magenta('GET')} ${chalk.underline.italic.gray('/report')} success: ${chalk.red('false')}`)
-    }
-}
-
-export const removeAll = async (req, res) => {
-    try {
-        await ReportModel.deleteMany()
-
-        res.status(200).json({
-            success: true
-        })
-        console.log(`${chalk.red('DELETE')} ${chalk.underline.italic.gray('/report/remove')} success: ${chalk.green('true')}`)
-    } catch (error) {
-        res.status(500).json({
-            message: 'Не удалось вернуть отчет'
-        })
-        console.log(`${chalk.red('DELETE')} ${chalk.underline.italic.gray('/report/remove')} success: ${chalk.red('false')}`)
+        res.status(403).json({ success: false })
     }
 }
