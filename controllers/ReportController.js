@@ -3,7 +3,6 @@ import chalk from 'chalk'
 import LessonModel from '../models/Lesson.js'
 
 export const monthlyReport = async (req, res) => {
-    console.log(1)
     try {
         await LessonModel.find({ status: 'held', date: {$gt: req.body.gt, $lt: req.body.lt} }).exec((err, docs) => {
             if (err) {
